@@ -2464,4 +2464,10 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
 '                                                                     '
 ];
 
-time1 = toc
+
+%% analysis time 
+time1 = toc;
+disp (['time since start: ', num2str(time1), ' sec']); 
+disp (['or ', num2str(time1/3600), ' hours']);
+disp (['or ', num2str(time1/3600/24), ' days']);
+
