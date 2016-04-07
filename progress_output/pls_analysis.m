@@ -362,7 +362,7 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
    
     filename=(['PLS_progress',datestr(now), '.txt']);
     fid = fopen(filename, 'w');
-    fprintf(fid, ' ');
+    fprintf(fid, '%s\n', ['Analysis started at: ',  datestr(now)]);
     fclose(fid);
    
     
@@ -2510,7 +2510,7 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
 ];
 
 
-%% analysis time 
+%% analysis time to output
 time1 = toc;
 disp (['time since start: ', num2str(time1), ' sec']); 
 disp (['or ', num2str(time1/3600), ' hours']);
@@ -2518,6 +2518,10 @@ disp (['or ', num2str(time1/3600/24), ' days']);
 
 %% Save time stamp at end of script
 fid = fopen(filename, 'a');
-fprintf(fid,'%s\n', ['DONE SAVING: ', datestr(now)]);
+fprintf(fid,'%s\n', ['DONE SAVING RESULTS: ', datestr(now)]);
+fprintf(fid,'%s\n', ['time since start: ', num2str(time1), ' sec']);
+fprintf(fid,'%s\n', ['or ', num2str(time1/3600), ' hours']);
+fprintf(fid,'%s\n', ['or ', num2str(time1/3600/24), ' days']);
 fclose(fid);
+
 
