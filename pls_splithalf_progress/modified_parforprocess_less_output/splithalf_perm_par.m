@@ -39,7 +39,8 @@ function [sop, ucorr_distrib, vcorr_distrib] = splithalf_perm(sop, ...
 
       %  outer perm loop
       % add parfor processbar 
-      parfor_progress(num_perm);
+      RR = randi(10000,1);
+      parfor_progress2(RR,num_perm);
       
       parfor op = 1:num_perm
 
@@ -233,10 +234,10 @@ function [sop, ucorr_distrib, vcorr_distrib] = splithalf_perm(sop, ...
          end
          
       
-      parfor_progress;
+      parfor_progress2(RR);
       end		% for num_perm
     
-      parfor_progress(0);
+      parfor_progress2(RR,0);
       
    return;					% splithalf_perm
 
