@@ -352,6 +352,24 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
    boot_type = 'strat';
    nonrotated_boot = 0;
 
+
+   %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %
+   %  OUTPUT PROGRESS INTO TEXTFILE
+   %
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   
+    filename=(['PLS_progress',datestr(now), '.txt']);
+    fid = fopen(filename, 'w');
+    fprintf(fid, ' ');
+    fclose(fid);
+   
+    
+   %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   
+   
+   
    if nargin == 4 & ~isempty(opt)
 
       if ~isstruct(opt)
@@ -1157,8 +1175,21 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
             msg = ['Working on Permutation:  ',num2str(p),' out of ',num2str(num_perm)];
             rri_progress_ui(progress_hdl, 'Run Permutation Test', msg);
             rri_progress_ui(progress_hdl,'',p/num_perm);
-         end
+         
 
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %%
+            %  OUTPUT PROGRESS INTO TEXTFILE
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                     
+            fid = fopen(filename, 'a');
+            fprintf(fid,'%s\n', ['PERMUTATION ' num2str(p), '/', num2str(num_perm), ' : ', num2str(p/num_perm*100), '%', ' : ', datestr(now)]);
+            fclose(fid);
+         
+         end
+         
+         
          if ismember(method, [4 6])
             datamat_reorder = Treorder(:,p);
             behavdata_reorder = reorder(:,p);
@@ -1701,6 +1732,8 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
          pcntacc = fprintf('Working on %d bootstraps:', num_boot);
       end
 
+
+      
       for p=1:num_boot
 
          if isempty(progress_hdl)
@@ -1709,6 +1742,18 @@ function result = pls_analysis(datamat_lst, num_subj_lst, k, opt)
             msg = ['Working on Bootstrap:  ',num2str(p),' out of ',num2str(num_boot)];
             rri_progress_ui(progress_hdl, 'Run Bootstrap Test', msg);
             rri_progress_ui(progress_hdl,'',p/num_boot);
+            
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %%
+            %  OUTPUT PROGRESS INTO TEXTFILE
+            %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            fid = fopen(filename, 'a');
+            fprintf(fid,'%s\n', ['BOOTSTRAP ' num2str(p), '/', num2str(num_boot), ' : ', num2str(p/num_boot*100), '%', ' : ', datestr(now)]);
+            fclose(fid);
+
          end
 
          datamat_reorder = reorder(:,p);
@@ -2470,4 +2515,9 @@ time1 = toc;
 disp (['time since start: ', num2str(time1), ' sec']); 
 disp (['or ', num2str(time1/3600), ' hours']);
 disp (['or ', num2str(time1/3600/24), ' days']);
+
+%% Save time stamp at end of script
+fid = fopen(filename, 'a');
+fprintf(fid,'%s\n', ['DONE SAVING: ', datestr(now)]);
+fclose(fid);
 
