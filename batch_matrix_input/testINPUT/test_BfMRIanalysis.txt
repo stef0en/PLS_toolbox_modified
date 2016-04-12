@@ -1,0 +1,141 @@
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Result File Name Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Note: Result file must be listed first, and must follow the file
+%	 name format of xxxx_yyyyresult.mat, where xxxx stands for
+%	 "any result file name prefix" and yyyy stands for the name
+%	 of PLS module (either PET ERP fMRI BfMRI STRUCT or SmallFC).
+%	 File name is case sensitive on Unix or Linux computers.
+
+result_file	test_BfMRIresult.mat
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Result File Name End  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Group Section Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+group_files	test1_BfMRIsessiondata.mat test2_BfMRIsessiondata.mat test3_BfMRIsessiondata.mat test4_BfMRIsessiondata.mat test5_BfMRIsessiondata.mat test6_BfMRIsessiondata.mat test7_BfMRIsessiondata.mat test8_BfMRIsessiondata.mat test9_BfMRIsessiondata.mat test10_BfMRIsessiondata.mat
+
+% ... following above pattern for more groups
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Group Section End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  PLS Section Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes:
+%    1. Mean-Centering PLS
+%    2. Non-Rotated Task PLS (please also fill out contrast data below)
+%    3. Regular Behav PLS (please also fill out behavior data & name below)
+%    4. Multiblock PLS (please also fill out behavior data & name below)
+%    5. Non-Rotated Behav PLS (please also fill out contrast data and
+%	behavior data & name below)
+%    6. Non-Rotated Multiblock PLS (please also fill out contrast data and
+%	behavior data & name below)
+
+pls		3		% PLS Option (between 1 to 6, see above notes)
+
+%  Mean-Centering Type:
+%    0. Remove group condition means from conditon means within each group
+%    1. Remove grand condition means from each group condition mean
+%    2. Remove grand mean over all subjects and conditions
+%    3. Remove all main effects by subtracting condition and group means
+
+mean_type	0		% Mean-Centering Type (between 0 to 3, see above)
+
+%  Correlation Mode:
+%    0. Pearson correlation
+%    2. covariance
+%    4. cosine angle
+%    6. dot product
+
+cormode		0		% Correlation Mode (can be 0,2,4,6, see above)
+
+num_perm	100		% Number of Permutation
+num_split	0		% Natasha Perm Split Half
+num_boot	50		% Number of Bootstrap
+boot_type	strat		% Either strat or nonstrat bootstrap type
+clim		95		% Confidence Level for Behavior PLS
+save_data	0		% Set to 1 to save stacked datamat
+
+	%%%%%%%%%%%%%%%%%%%%%
+	%  PLS Section End  %
+	%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Condition Selection Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes: If you don't need to deselect conditions, just leave
+%  "selected_cond" and "selected_bcond" to be commented.
+
+%  First put k number of 1 after "selected_cond" keyword, where k is the
+%  number of conditions in sessiondata file. Then, replace with 0 for
+%  those conditions that you would like to deselect for any case except
+%  behavior block of multiblock PLS. e.g. If you have 3 conditions in
+%  sessiondata file, and you would like to deselect the 2nd condition,
+%  then you should enter 1 0 1 after selected_cond.
+%
+selected_cond	1 
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Condition Selection End  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Data Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Notes: only list selected conditions (selected_cond)
+
+ behavior_data 10.5909519	16.6484833	8.4848022	4.4029541	16.0995102	23.5945396	10.1453123	9.1002531	20.2225246	20.3169727	
+ behavior_data 18.6449642	33.4808846	29.4463024	7.7186131	12.8693762	27.8990574	34.9107246	32.0905800	12.5538330	6.3715367	
+ behavior_data 5.1535864	16.4106960	18.1168098	13.7666149	19.9386864	14.7467899	9.2218351	3.1098237	12.2511044	21.7017727	
+behavior_data 20.5374413	21.7443047	9.5060196	3.9924257	2.5500185	7.7987533	10.4291096	8.7361097	3.2716906	0.7371691	
+behavior_data 2.1384017	3.6397417	6.2664351	8.1608229	8.2176933	2.7022836	4.7665048	7.0452161	9.4199371	8.6780014	
+behavior_data 6.2917852	5.9556923	8.5885601	13.5882540	8.1786480	3.2073376	4.0763183	5.0490904	7.1389160	6.6367836	
+behavior_data 5.6095037	6.5333161	8.1968546	10.7542953	7.9400430	5.2994113	4.6183820	6.6333270	8.7840528	9.0050058	
+behavior_data 7.4162636	4.3256564	3.6485190	3.4674077	4.8020449	5.3740788	6.7149239	8.3974981	7.4183898	5.8311830	
+behavior_data 5.2362747	7.0799522	7.3974156	6.4000626	6.6508183	7.9258685	7.2505636	1.5768832	2.9439306	3.5177207	
+behavior_data 6.6953197	15.3699894	14.3491335	7.6062303	9.4889345	12.8189554	12.0751858	6.6510677	3.8522060	5.6167235	
+
+% ... following above pattern for more groups
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Data End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Name Start  %
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  Numbers of Behavior Name should match the Behavior Data above
+
+behavior_name cond1	cond2	cond3	cond4	cond5	cond6	cond7	cond8	cond9	cond10
+
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%  Behavior Name End  %
+	%%%%%%%%%%%%%%%%%%%%%%%
+
+%------------------------------------------------------------------------
+
