@@ -1,46 +1,32 @@
 function batch_plsgui(varargin)
+%% start PLS analysis or PLS datamat file creation.
+% hacked version: receive input from .mat file as structure not as text 
+% file
+
 
    if nargin < 1
       error('Usage: batch_plsgui(batch_text_file_name(s))');
    end
 
+   %% initalize PLS
    p = which('plsgui');
    [p f] = fileparts(p); [p f] = fileparts(p);
    cmdloc = fullfile(p, 'plscmd');
    addpath(cmdloc);
 
+   %% loop over various input files
    for i = 1:nargin
-      batch_file = varargin{i};
-      fid = fopen(batch_file);
-
-      tmp = fgetl(fid);
-
-      if ischar(tmp) & ~isempty(tmp)
-         tmp = strrep(tmp, char(9), ' ');
-         tmp = deblank(fliplr(deblank(fliplr(tmp))));
-      end
-
-      while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
-         tmp = fgetl(fid);
-
-         if ischar(tmp) & ~isempty(tmp)
-            tmp = strrep(tmp, char(9), ' ');
-            tmp = deblank(fliplr(deblank(fliplr(tmp))));
-         end
-      end
-
-      fseek(fid, 0, 'bof');
-
-      if ischar(tmp) & ~isempty(tmp)
-         tok = strtok(tmp);
+      load(varargin{i});
+            
+      % test if analysis or datamat creation has to be started 
+      if batch_analysis.resultfile==true
+         batch_pls_analysis(batch_analysis);
       else
-         tok = '';
-      end
-
-      if strcmpi(tok, 'result_file')
-         batch_pls_analysis(fid);
-      else
-         batch_create_datamat(fid);
+          
+          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          %% NOT DONE YET!!!!
+          batch_create_datamat(batch_analysis);
+          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       end
    end
 
