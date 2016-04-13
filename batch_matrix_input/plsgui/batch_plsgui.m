@@ -19,7 +19,7 @@ function batch_plsgui(varargin)
       load(varargin{i});
             
       % test if analysis or datamat creation has to be started 
-      if batch_file.resultfile==true
+      if batch_file.is_analysis==true
          batch_pls_analysis(batch_file);
       else
           
