@@ -30,67 +30,28 @@ function batch_pls_analysis(batch_file)
    wrongbatch = 0;
 
 
+   
+    %% set up analyis
 
-%   tmp = fgetl(fid);
-% 
-%   if ischar(tmp) & ~isempty(tmp)
-%      tmp = strrep(tmp, char(9), ' ');
-% %         tmp = deblank(fliplr(deblank(fliplr(tmp))));
-%      tmp = deblank(strjust(tmp, 'left'));
-%   end
-% 
-%   while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
-%      tmp = fgetl(fid);
-% 
-%      if ischar(tmp) & ~isempty(tmp)
-%         tmp = strrep(tmp, char(9), ' ');
-%         tmp = deblank(strjust(tmp, 'left'));
-%      end
-%   end
-% 
-%   if ischar(tmp) & ~isempty(tmp)
-%      [tok rem] = strtok(tmp);
-% 
-%      if ~isempty(rem)
-%         [rem junk] = strtok(rem, '%');
-%         rem = deblank(strjust(rem, 'left'));
-%      end
-%   else
-%      tok = '';
-%   end
-
-
-%% set up analyis
-
-    % analysis or datamat creation
-    
-    if batch_file.result_file==ture
-    
-        %result_file
-        if isempty(batch_file.result_file_name), wrongbatch = 1; 
-        else result_file = batch_file.result_file_name;
-        end
-
-        %group_files = datamat (HAVE TO CHECK THIS!!!)
-    else this_group = {};
-
-        if isempty(findstr(batch_file.result_file_name, 'sessiondata.mat'))
-            msg = '\nATTENTION\n';
-            msg = [msg '=========\n\n'];
-            msg = [msg 'PLS now combines session/datamat files to sessiondata file. File name\n'];
-            msg = [msg 'after group_files keyword must be sessiondata file. You need to use\n'];
-            msg = [msg 'commmand session2sessiondata to convert session/datamat into sessiondata.\n'];
-            msg = [msg 'For more detail, please type: help session2sessiondata\n\n'];
-            fprintf(msg);
-            wrongbatch = 1;
-        end
-
-
-    this_group = [this_group; {batch_file.result_file_name}];
+    %result_file
+    if isempty(batch_file.result_file), wrongbatch = 1; 
+    else result_file = batch_file.result_file;
     end
 
-    if isempty(this_group), wrongbatch = 1; end;
-    group_files = [group_files {this_group}];
+    %group_files
+    if isempty(strcmp('sessiondata.mat', batch_file.group_files))
+        msg = '\nATTENTION\n';
+        msg = [msg '=========\n\n'];
+        msg = [msg 'PLS now combines session/datamat files to sessiondata file. File name\n'];
+        msg = [msg 'after group_files keyword must be sessiondata file. You need to use\n'];
+        msg = [msg 'commmand session2sessiondata to convert session/datamat into sessiondata.\n'];
+        msg = [msg 'For more detail, please type: help session2sessiondata\n\n'];
+        fprintf(msg);
+        wrongbatch = 1;
+    end
+
+    if isempty(batch_file.group_files), wrongbatch = 1; end;
+    group_files = batch_file.group_files;
 
    
     
@@ -156,35 +117,39 @@ function batch_pls_analysis(batch_file)
     end;
 
     % selected_cond
-    selected_cond = batch_file.selected_cond;
+    if isfield (batch_file, 'selected_cond'), selected_cond=[];
+    else selected_cond = batch_file.selected_cond;
+    end;
 
     % selected_bcond
-    selected_bcond = batch_file.selected_bcond;
+    if isfield(batch_file,'selected_bcond'), selected_cond=[];
+    else selected_bcond = batch_file.selected_bcond;
+    end;
 
     
     
     
     
     % contrast_data
-    this_row = [];
-
-    %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
-    while ~isempty(rem)
-        [tmp rem] = strtok(rem);
-        this_row = [this_row str2num(tmp)];
-    end
-
-    if isempty(this_row)
-        wrongbatch = 1;
-        break;
-    end
-
-    if ~isempty(contrasts) & size(contrasts,2) ~= length(this_row)
-        wrongbatch = 1;
-        break;
-    end
-
-    contrasts = [contrasts; this_row];
+%     this_row = [];
+% 
+%     %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
+%     while ~isempty(rem)
+%         [tmp rem] = strtok(rem);
+%         this_row = [this_row str2num(tmp)];
+%     end
+% 
+%     if isempty(this_row)
+%         wrongbatch = 1;
+%         break;
+%     end
+% 
+%     if ~isempty(contrasts) & size(contrasts,2) ~= length(this_row)
+%         wrongbatch = 1;
+%         break;
+%     end
+% 
+%     contrasts = [contrasts; this_row];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
@@ -192,27 +157,27 @@ function batch_pls_analysis(batch_file)
     % behavior_data
     if isempty(batch_file.behavdata)
         wrongbatch = 1;
-        break;
+        return;
     else behavdata = batch_file.behavdata;
     end
         
     % behavior_name
     if isempty(batch_file.behavname)
         wrongbatch = 1;
-        break;
+        return;
     else behavname = batch_file.behavname;
     end
     
     % test if behavedata and behavename are coherent
     if (numel(behavname) ~= size(behavdata,1))
         wrongbatch = 1;
-        break;
+        return;
     end
     
    
    
    if wrongbatch
-      error('There is error(s) in batch file, please read ''UserGuide.htm'' for help');
+      error('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/output2textfile/batch_matrix_input');
    end
 
    if(exist(result_file, 'file')==2)
