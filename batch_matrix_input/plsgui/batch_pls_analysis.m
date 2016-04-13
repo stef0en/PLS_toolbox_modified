@@ -56,7 +56,7 @@ function batch_pls_analysis(batch_file)
     end
    
     
-    % PLS
+    % PLS method
     if ~isfield (batch_file, 'method'),  wrongbatch = 1; msgErr='method missing in input';
     elseif isempty(batch_file.method), method = 1; fprintf('set: method = 1');
     else method = batch_file.method;
@@ -140,13 +140,14 @@ function batch_pls_analysis(batch_file)
     end;
 
     
-    
-    
-    
     % contrast_data
-%     this_row = [];
-% 
-%     %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
+
+    %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
+    if ~isfield (batch_file, 'contrast_data'), contrast_data=[];
+    elseif isempty(batch_file.contrast_data), wrongbatch = 1; msgErr='contrast_data empty';
+    else contrast_data = batch_file.contrast_data;
+    end;
+
 %     while ~isempty(rem)
 %         [tmp rem] = strtok(rem);
 %         this_row = [this_row str2num(tmp)];
@@ -161,20 +162,19 @@ function batch_pls_analysis(batch_file)
 %         wrongbatch = 1;
 %         break;
 %     end
-% 
-%     contrasts = [contrasts; this_row];
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
     
     % behavior_data
-    if ~isfield (batch_file, 'behavdata'), wrongbatch = 1; msgErr='behavdata missing in input';
+    if ~isfield (batch_file, 'behavdata'), behavdata=[];
     elseif isempty(batch_file.behavdata), wrongbatch = 1; msgErr='behavdata empty';
     else behavdata = batch_file.behavdata;
     end
         
     % behavior_name
-    if ~isfield (batch_file, 'behavname'), wrongbatch = 1; msgErr='behavname missing in input';
+    if ~isfield (batch_file, 'behavname'), behavname=[];
     elseif isempty(batch_file.behavname), wrongbatch = 1;  msgErr='behavname empty';
     else behavname = batch_file.behavname;
     end
