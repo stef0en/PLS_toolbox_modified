@@ -21,13 +21,13 @@
 		* method: int 			**PLS Option (between 1 to 6, see PLS notes)**
 			> Notes:
 			> 1. Mean-Centering PLS
-			> 2. Non-Rotated Task PLS (please also fill out contrast data below)
-			> 3. Regular Behav PLS (please also fill out behavior data & name below)
-			> 4. Multiblock PLS (please also fill out behavior data & name below)
+			> 2. Non-Rotated Task PLS (please also fill out contrast data)
+			> 3. Regular Behav PLS (please also fill out behavior data & name)
+			> 4. Multiblock PLS (please also fill out behavior data & name)
 			> 5. Non-Rotated Behav PLS (please also fill out contrast data and
-			> behavior data & name below)
+			> behavior data & name)
 			> 6. Non-Rotated Multiblock PLS (please also fill out contrast data and
-			> behavior data & name below)
+			> behavior data & name)
 			
 		* mean_type: int	**Mean-Centering Type (between 0 to 3)**
 			> Mean-Centering Type:
@@ -52,7 +52,7 @@
 		* save\_data: int		**Set to 1 to save stacked datamat**
 		* selected\_cond: int array
 			> Notes: If you don't need to deselect conditions, just leave
-			> "selected\_cond" and "selected_bcond" to be commented.
+			> "selected\_cond" and "selected_bcond" empty.
 			
 			> First put k number of 1 after "selected_cond" keyword, where k is the
 			> number of conditions in sessiondata file. Then, replace with 0 for
@@ -67,5 +67,7 @@
 		
 		* is\_struct: int	**??**
 		* intel\_system: int **??**
+		
+		* contrast\_data: **??**
 	
 	
