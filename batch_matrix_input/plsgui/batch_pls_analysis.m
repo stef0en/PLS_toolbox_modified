@@ -1,5 +1,6 @@
-function batch_pls_analysis(fid)
+function batch_pls_analysis(batch_file)
 
+   %% initalize variables
    result_file = '';
    group_files = {};
    method = 1;
@@ -30,152 +31,186 @@ function batch_pls_analysis(fid)
 
 
 
-  tmp = fgetl(fid);
-
-  if ischar(tmp) & ~isempty(tmp)
-     tmp = strrep(tmp, char(9), ' ');
-%         tmp = deblank(fliplr(deblank(fliplr(tmp))));
-     tmp = deblank(strjust(tmp, 'left'));
-  end
-
-  while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
-     tmp = fgetl(fid);
-
-     if ischar(tmp) & ~isempty(tmp)
-        tmp = strrep(tmp, char(9), ' ');
-        tmp = deblank(strjust(tmp, 'left'));
-     end
-  end
-
-  if ischar(tmp) & ~isempty(tmp)
-     [tok rem] = strtok(tmp);
-
-     if ~isempty(rem)
-        [rem junk] = strtok(rem, '%');
-        rem = deblank(strjust(rem, 'left'));
-     end
-  else
-     tok = '';
-  end
-
-  switch tok
-  case 'result_file'
-     result_file = rem;
-     if isempty(rem), wrongbatch = 1; end;
-  case 'group_files'
-     this_group = {};
-
-     while ~isempty(rem)
-        [tmp rem] = strtok(rem);
+%   tmp = fgetl(fid);
+% 
+%   if ischar(tmp) & ~isempty(tmp)
+%      tmp = strrep(tmp, char(9), ' ');
+% %         tmp = deblank(fliplr(deblank(fliplr(tmp))));
+%      tmp = deblank(strjust(tmp, 'left'));
+%   end
+% 
+%   while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
+%      tmp = fgetl(fid);
+% 
+%      if ischar(tmp) & ~isempty(tmp)
+%         tmp = strrep(tmp, char(9), ' ');
+%         tmp = deblank(strjust(tmp, 'left'));
+%      end
+%   end
+% 
+%   if ischar(tmp) & ~isempty(tmp)
+%      [tok rem] = strtok(tmp);
+% 
+%      if ~isempty(rem)
+%         [rem junk] = strtok(rem, '%');
+%         rem = deblank(strjust(rem, 'left'));
+%      end
+%   else
+%      tok = '';
+%   end
 
 
-        if isempty(findstr(tmp, 'sessiondata.mat'))
-           msg = '\nATTENTION\n';
-           msg = [msg '=========\n\n'];
-           msg = [msg 'PLS now combines session/datamat files to sessiondata file. File name\n'];
-           msg = [msg 'after group_files keyword must be sessiondata file. You need to use\n'];
-           msg = [msg 'commmand session2sessiondata to convert session/datamat into sessiondata.\n'];
-           msg = [msg 'For more detail, please type: help session2sessiondata\n\n'];
-           fprintf(msg);
-           wrongbatch = 1;
+%% set up analyis
+
+    % analysis or datamat creation
+    
+    if batch_file.result_file==ture
+    
+        %result_file
+        if isempty(batch_file.result_file_name), wrongbatch = 1; 
+        else result_file = batch_file.result_file_name;
+        end
+
+        %group_files = datamat (HAVE TO CHECK THIS!!!)
+    else this_group = {};
+
+        if isempty(findstr(batch_file.result_file_name, 'sessiondata.mat'))
+            msg = '\nATTENTION\n';
+            msg = [msg '=========\n\n'];
+            msg = [msg 'PLS now combines session/datamat files to sessiondata file. File name\n'];
+            msg = [msg 'after group_files keyword must be sessiondata file. You need to use\n'];
+            msg = [msg 'commmand session2sessiondata to convert session/datamat into sessiondata.\n'];
+            msg = [msg 'For more detail, please type: help session2sessiondata\n\n'];
+            fprintf(msg);
+            wrongbatch = 1;
         end
 
 
-        this_group = [this_group; {tmp}];
-     end
+    this_group = [this_group; {batch_file.result_file_name}];
+    end
 
-     if isempty(this_group), wrongbatch = 1; end;
-     group_files = [group_files {this_group}];
-  case 'pls'
-     method = str2num(rem);
-     if isempty(method), method = 1; end;
-  case 'num_perm'
-     num_perm = str2num(rem);
-     if isempty(num_perm), num_perm = 0; end;
-  case 'num_boot'
-     num_boot = str2num(rem);
-     if isempty(num_boot), num_boot = 0; end;
-  case 'clim'
-     clim = str2num(rem);
-     if isempty(clim), clim = 95; end;
+    if isempty(this_group), wrongbatch = 1; end;
+    group_files = [group_files {this_group}];
 
-  case 'num_split'
-     num_split = str2num(rem);
-     if isempty(num_split), num_split = 0; end;
-  case 'mean_type'
-     mean_type = str2num(rem);
-     if isempty(mean_type), mean_type = 0; end;
-  case 'cormode'
-     cormode = str2num(rem);
-     if isempty(cormode), cormode = 0; end;
-  case 'boot_type'
-     boot_type = rem;
-     if isempty(cormode), cormode = 'strat'; end;
-  case 'nonrotated_boot'
-     nonrotated_boot = str2num(rem);
-     if isempty(nonrotated_boot), nonrotated_boot = 0; end;
-
-  case 'save_data'
-     save_data = str2num(rem);
-     if isempty(save_data), save_data = 0; end;
-  case 'intel_system'
-     intel_system = str2num(rem);
-     if isempty(intel_system), intel_system = 1; end;
-  case 'is_struct'
-     is_struct = str2num(rem);
-     if isempty(is_struct), is_struct = 0; end;
-  case 'selected_cond'
-     selected_cond = str2num(rem);
-  case 'selected_bcond'
-     selected_bcond = str2num(rem);
-  case 'contrast_data'
-     this_row = [];
-
-     while ~isempty(rem)
-        [tmp rem] = strtok(rem);
-        this_row = [this_row str2num(tmp)];
-     end
-
-     if isempty(this_row)
-        wrongbatch = 1;
-        break;
-     end
-
-     if ~isempty(contrasts) & size(contrasts,2) ~= length(this_row)
-        wrongbatch = 1;
-        break;
-     end
-
-     contrasts = [contrasts; this_row];
-  case 'behavior_data'
-     this_row = [];
-
-     while ~isempty(rem)
-        [tmp rem] = strtok(rem);
-        this_row = [this_row str2num(tmp)];
-     end
-
-     if isempty(this_row)
-        wrongbatch = 1;
-        break;
-     end
-
-     if ~isempty(behavdata) & size(behavdata,2) ~= length(this_row)
-        wrongbatch = 1;
-        break;
-     end
-
-     behavdata = [behavdata; this_row];
-  case 'behavior_name'
-     while ~isempty(rem)
-        [tmp rem] = strtok(rem);
-        behavname = [behavname {tmp}];
-     end
-  end
    
+    
+    % PLS
+    if isempty(batch_file.method), method = 1; 
+    else method = batch_file.method;
+    end;
+    
+    % num_perm
+    if isempty(batch_file.num_perm), num_perm = 0; 
+    else num_perm = batch_file.num_perm;
+    end;
 
+    % num_boot
+    
+    if isempty(batch_file.num_boot), num_boot = 0; 
+    else num_boot = batch_file.num_boot;
+    end;
 
+    % clim
+    if isempty(batch_file.clim), clim = 95; 
+    else clim = batch_file.clim;
+    end;
 
+    % num_split
+    if isempty(batch_file.num_split), num_split = 0; 
+    else num_split = batch_file.num_split;
+    end;
+
+    % mean_type
+    if isempty(batch_file.mean_type), mean_type = 0; 
+    else mean_type = batch_file.mean_type;
+    end;
+
+    % cormode
+    if isempty(cormode), cormode = 0; 
+    else cormode = batch_file.cormode;
+    end;
+    
+    % boot_type
+    if isempty(batch_file.boot_type), boot_type = 'strat'; 
+    boot_type = batch_file.boot_type;
+    end;
+
+    % nonrotated_boot
+    if isempty(nonrotated_boot), nonrotated_boot = 0; 
+    else nonrotated_boot = batch_file.nonrotated_boot;
+    end;
+
+    % save_data
+    if isempty(batch_file.save_data), save_data = 0; 
+    else save_data = batch_file.save_data;
+    end;
+
+    % intel_system
+    if isempty(batch_file.intel_system), intel_system = 1; 
+    else intel_system = batch_file.intel_system;
+    end;
+
+ 	% is_struct
+    if isempty(batch_file.is_struct), is_struct = 0; 
+    else is_struct = batch_file.is_struct;
+    end;
+
+    % selected_cond
+    selected_cond = batch_file.selected_cond;
+
+    % selected_bcond
+    selected_bcond = batch_file.selected_bcond;
+
+    
+    
+    
+    
+    % contrast_data
+    this_row = [];
+
+    %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
+    while ~isempty(rem)
+        [tmp rem] = strtok(rem);
+        this_row = [this_row str2num(tmp)];
+    end
+
+    if isempty(this_row)
+        wrongbatch = 1;
+        break;
+    end
+
+    if ~isempty(contrasts) & size(contrasts,2) ~= length(this_row)
+        wrongbatch = 1;
+        break;
+    end
+
+    contrasts = [contrasts; this_row];
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
+    % behavior_data
+    if isempty(batch_file.behavdata)
+        wrongbatch = 1;
+        break;
+    else behavdata = batch_file.behavdata;
+    end
+        
+    % behavior_name
+    if isempty(batch_file.behavname)
+        wrongbatch = 1;
+        break;
+    else behavname = batch_file.behavname;
+    end
+    
+    % test if behavedata and behavename are coherent
+    if (numel(behavname) ~= size(behavdata,1))
+        wrongbatch = 1;
+        break;
+    end
+    
+   
+   
    if wrongbatch
       error('There is error(s) in batch file, please read ''UserGuide.htm'' for help');
    end
