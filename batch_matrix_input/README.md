@@ -47,6 +47,7 @@
 		* num\_split: int	**Natasha Perm Split Half**
 		* num\_boot: int		**Number of Bootstrap**
 		* boot\_type: char (strat)		**Either strat or nonstrat bootstrap type**
+		* nonrotated\_boot: int **??**
 		* clim: int		**Confidence Level for Behavior PLS**
 		* save\_data: int		**Set to 1 to save stacked datamat**
 		* selected\_cond: int array
@@ -60,8 +61,11 @@
 			> sessiondata file, and you would like to deselect the 2nd condition,
 			> then you should enter 1 0 1 after selected_cond.
 			
-		* behaviordata: cell	**Contains data from behavioral conditions**
+		* selected\_bcond: int	**??**
+		* behaviordata: matrix	**Contains data from behavioral conditions; ROWs = data, COLs = subjects**
 		* behaviorname: cell	**Contains names of behavioral conditions**
 		
+		* is\_struct: int	**??**
+		* intel\_system: int **??**
 	
 	
