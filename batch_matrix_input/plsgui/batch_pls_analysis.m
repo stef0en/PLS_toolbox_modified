@@ -34,12 +34,14 @@ function batch_pls_analysis(batch_file)
     %% set up analyis
 
     %result_file
-    if isempty(batch_file.result_file), wrongbatch = 1; 
+    if ~isfield(batch_file, 'result_file'),  wrongbatch = 1; msgErr='result_file missing in input';
+    elseif isempty(batch_file.result_file), wrongbatch = 1; msgErr='result_file empty';
     else result_file = batch_file.result_file;
     end
 
     %group_files
-    if isempty(strcmp('sessiondata.mat', batch_file.group_files))
+    if ~isfield (batch_file, 'group_files'),  wrongbatch = 1; msgErr='group_files missing in input';
+    elseif isempty(strcmp('sessiondata.mat', batch_file.group_files))
         msg = '\nATTENTION\n';
         msg = [msg '=========\n\n'];
         msg = [msg 'PLS now combines session/datamat files to sessiondata file. File name\n'];
@@ -48,81 +50,92 @@ function batch_pls_analysis(batch_file)
         msg = [msg 'For more detail, please type: help session2sessiondata\n\n'];
         fprintf(msg);
         wrongbatch = 1;
+   
+    elseif isempty(batch_file.group_files), wrongbatch = 1; msgErr='group_files empty';
+    else group_files = batch_file.group_files;
     end
-
-    if isempty(batch_file.group_files), wrongbatch = 1; end;
-    group_files = batch_file.group_files;
-
    
     
     % PLS
-    if isempty(batch_file.method), method = 1; 
+    if ~isfield (batch_file, 'method'),  wrongbatch = 1; msgErr='method missing in input';
+    elseif isempty(batch_file.method), method = 1; fprintf('set: method = 1');
     else method = batch_file.method;
     end;
     
     % num_perm
-    if isempty(batch_file.num_perm), num_perm = 0; 
+    if ~isfield (batch_file, 'num_perm'),  wrongbatch = 1; msgErr='num_perm missing in input';
+    elseif isempty(batch_file.num_perm), num_perm = 0; fprintf('set: num_perm = 0');
     else num_perm = batch_file.num_perm;
     end;
 
     % num_boot
-    
-    if isempty(batch_file.num_boot), num_boot = 0; 
+    if ~isfield (batch_file, 'num_boot'),  wrongbatch = 1; msgErr='num_boot missing in input';
+    elseif isempty(batch_file.num_boot), num_boot = 0; fprintf('set: num_boot = 0');
     else num_boot = batch_file.num_boot;
     end;
 
     % clim
-    if isempty(batch_file.clim), clim = 95; 
+    if ~isfield (batch_file, 'clim'),  wrongbatch = 1; msgErr='clim missing in input';
+    elseif isempty(batch_file.clim), clim = 95; fprintf('set: clim = 95');
     else clim = batch_file.clim;
     end;
 
     % num_split
-    if isempty(batch_file.num_split), num_split = 0; 
+    if ~isfield (batch_file, 'num_split'),  wrongbatch = 1; msgErr='num_split missing in input';
+    elseif isempty(batch_file.num_split), num_split = 0;fprintf('set: num_split = 0');
     else num_split = batch_file.num_split;
     end;
 
     % mean_type
-    if isempty(batch_file.mean_type), mean_type = 0; 
+    if ~isfield (batch_file, 'mean_type'),  wrongbatch = 1; msgErr='mean_type missing in input';
+    elseif isempty(batch_file.mean_type), mean_type = 0; fprintf('set: mean_type = 0');
     else mean_type = batch_file.mean_type;
     end;
 
     % cormode
-    if isempty(cormode), cormode = 0; 
+    if ~isfield (batch_file, 'cormode'),  wrongbatch = 1; msgErr='cormode missing in input';
+    elseif isempty(batch_file.cormode), cormode = 0; fprintf('set: cormode = 0');
     else cormode = batch_file.cormode;
     end;
     
     % boot_type
-    if isempty(batch_file.boot_type), boot_type = 'strat'; 
+    if ~isfield (batch_file, 'boot_type'),  wrongbatch = 1; msgErr='boot_type missing in input';
+    elseif isempty(batch_file.boot_type), boot_type = 'strat'; fprintf('set: boot_type = "strat"');
     boot_type = batch_file.boot_type;
     end;
 
     % nonrotated_boot
-    if isempty(nonrotated_boot), nonrotated_boot = 0; 
+    if ~isfield (batch_file, 'nonrotated_boot'),  wrongbatch = 1; msgErr='nonrotated_boot missing in input';
+    elseif isempty(nonrotated_boot), nonrotated_boot = 0; fprintf('nonrotated_boot = 0');
     else nonrotated_boot = batch_file.nonrotated_boot;
     end;
 
     % save_data
-    if isempty(batch_file.save_data), save_data = 0; 
+    if ~isfield (batch_file, 'save_data'),  save_data = 0; fprintf('set: save_data = 0');
+    elseif isempty(batch_file.save_data), save_data = 0; fprintf('set: save_data = 0');
     else save_data = batch_file.save_data;
     end;
 
     % intel_system
-    if isempty(batch_file.intel_system), intel_system = 1; 
+    if ~isfield (batch_file, 'intel_system'), intel_system = 1; fprintf('set: intel_system = 1');
+    elseif isempty(batch_file.intel_system), intel_system = 1; fprintf('set: intel_system = 1');
     else intel_system = batch_file.intel_system;
     end;
 
  	% is_struct
-    if isempty(batch_file.is_struct), is_struct = 0; 
+    if ~isfield (batch_file, 'is_struct'), is_struct = 0; fprintf('set: is_struct = 0');
+    elseif isempty(batch_file.is_struct), is_struct = 0; fprintf('set: is_struct = 0');
     else is_struct = batch_file.is_struct;
     end;
 
     % selected_cond
-    if isfield (batch_file, 'selected_cond'), selected_cond=[];
+    if ~isfield (batch_file, 'selected_cond'), wrongbatch = 1; msgErr='selected_cond missing in input';
+    elseif isempty(batch_file.selected_cond), wrongbatch = 1; msgErr='selected_cond empty';
     else selected_cond = batch_file.selected_cond;
     end;
 
     % selected_bcond
-    if isfield(batch_file,'selected_bcond'), selected_cond=[];
+    if ~isfield(batch_file,'selected_bcond'), selected_cond=[];
     else selected_bcond = batch_file.selected_bcond;
     end;
 
@@ -155,29 +168,28 @@ function batch_pls_analysis(batch_file)
     
     
     % behavior_data
-    if isempty(batch_file.behavdata)
-        wrongbatch = 1;
-        return;
+    if ~isfield (batch_file, 'behavdata'), wrongbatch = 1; msgErr='behavdata missing in input';
+    elseif isempty(batch_file.behavdata), wrongbatch = 1; msgErr='behavdata empty';
     else behavdata = batch_file.behavdata;
     end
         
     % behavior_name
-    if isempty(batch_file.behavname)
-        wrongbatch = 1;
-        return;
+    if ~isfield (batch_file, 'behavname'), wrongbatch = 1; msgErr='behavname missing in input';
+    elseif isempty(batch_file.behavname), wrongbatch = 1;  msgErr='behavname empty';
     else behavname = batch_file.behavname;
     end
     
     % test if behavedata and behavename are coherent
-    if (numel(behavname) ~= size(behavdata,1))
-        wrongbatch = 1;
-        return;
+    if (numel(behavname) ~= size(behavdata,1)), wrongbatch = 1; 
+        msgErr='behavname and behavdata have different sizes';
     end
     
    
-   
+   %% check for errors and output infos
    if wrongbatch
-      error('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/output2textfile/batch_matrix_input');
+      fprintf('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/output2textfile/batch_matrix_input \n\n') 
+      error(msgErr);
+      return;
    end
 
    if(exist(result_file, 'file')==2)
@@ -195,11 +207,15 @@ function batch_pls_analysis(batch_file)
    else
       fclose(fid);
    end
+   
+   
+   %% untouched script...
 
    progress_hdl = rri_progress_status('create','PLS Analysis');
    first_file = group_files{1}{1};
    load(first_file, 'session_info');
 
+     
    if isempty(selected_cond) | sum(selected_cond) == 0 | ...
 	( length(selected_cond) ~= session_info.num_conditions & ...
           isempty(findstr(first_file, '_ERPsessiondata.mat')) )
