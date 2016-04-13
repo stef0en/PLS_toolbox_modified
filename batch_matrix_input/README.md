@@ -7,9 +7,9 @@
 
 
 2. Structure of _XXX\_BfMRIanalysis.mat_
-	* contains a structure **batch_analysis**
-		* result_file: binary **true if analysis, false if datamat creation**
-		* result\_file\_name: char **(XXX_BfMRIresult.mat)**
+	* contains a structure **batch\_analysis**
+		* is\_analyis: binary **true if analysis, false if datamat creation**
+		* result\_file: char **XXX\_BfMRIresult.mat or XXX\_MODELresult.mat)**
 			> Note: 
 			> Result file must be listed first, and must follow the file
 			> name format of xxxx_yyyyresult.mat, where xxxx stands for
@@ -17,7 +17,7 @@
 			> of PLS module (either PET ERP fMRI BfMRI STRUCT or SmallFC).
 			> File name is case sensitive on Unix or Linux computers.
 		 
-		* group_files: char **must be in the form _BfMRIsessiondata.mat**
+		* group_files: cell **must be in the form XXX\_BfMRIsessiondata.mat; 1xn cell, n=groups, groups=1xm cell, m=subjects**
 		* method: int 			**PLS Option (between 1 to 6, see PLS notes)**
 			> Notes:
 			> 1. Mean-Centering PLS
