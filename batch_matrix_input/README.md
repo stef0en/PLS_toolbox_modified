@@ -1,4 +1,25 @@
-#Conception of PLS input matrix
+## Read-in batch PLS fMRI analysis from MAT-file
+PLS toolbox (https://www.rotman-baycrest.on.ca/index.php?section=84) has the ability to start batch analysis from text-files. This has been proven unhandy when, for example large behavoiral data, made the text file grew very large.
+
+Therefore we changed the code of 2 functions (**batch\_pls\_analysis.m** and **batch\_plsgui.m**) within the PLS toolbox to allow reading MATLAB structures. Those structures can be filled easily and dynamically with content of any size and kind.
+
+To run an analysis from MAT-file:
+
+1. copy **batch\_pls\_analysis.m** and **batch\_plsgui.m** into PLS/plsgui directory.
+2. create a MATLAB file (e.g. PLS\_Bfmri\_analysis.mat) containing a stucture called **batch\_file**
+	 * Use the templates in this directory to see which variables need to be included 
+	 
+3. Fill the MAT-file with your data.
+4. Start the analysis in MATLAB with: _batch\_plsgui('nameOfYourMATfile.mat')_
+
+For developmental information see:
+
+https://github.com/stef0en/PLS_toolbox_modified/tree/master/batch_matrix_input
+
+https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/master/batch_matrix_input
+
+
+# Conception of PLS input matrix
 
 
 1. Properties:
@@ -68,6 +89,11 @@
 		* is\_struct: int	**??**
 		* intel\_system: int **??**
 		
-		* contrast\_data: **??**
+		* contrasts: array **??**
 	
-	
+## Tamplates
+Not all of the aforementioned variables need to be included. Use the template as reference which variables have to be included in the MAT-file. There are 3 templates in the repository for:
+
+1. Behavioral PLS
+2. Task PLS
+3. Task PLS with different Contrasts
