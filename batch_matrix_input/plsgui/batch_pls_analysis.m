@@ -9,7 +9,7 @@ function batch_pls_analysis(batch_file)
    clim = 95;
    save_data = 0;
    
-   %%??
+   %%system stuff
    has_unequal_subj = 0;
    intel_system = 1;
    is_struct = 0;
@@ -18,14 +18,14 @@ function batch_pls_analysis(batch_file)
    mean_type = 0;
    cormode = 0;
    boot_type = 'strat';
-   nonrotated_boot = 0; %%?
+   nonrotated_boot = 0; 
 
    contrasts = [];
    behavdata = [];
    behavname = {};
    selected_cond = [];
-   selected_bcond = []; %??
-   bscan = [];  %??
+   selected_bcond = []; 
+   bscan = [];  
 
    wrongbatch = 0;
 
@@ -140,42 +140,22 @@ function batch_pls_analysis(batch_file)
     end;
 
     
-    % contrast_data
-
-    %%%%% HAVE TO TEST THIS FOR CONTRAST DATA%%%%%
-    if ~isfield (batch_file, 'contrast_data'), contrast_data=[];
-    elseif isempty(batch_file.contrast_data), wrongbatch = 1; msgErr='contrast_data empty';
-    else contrast_data = batch_file.contrast_data;
+    % contrasts
+    if ~isfield (batch_file, 'contrasts'), contrasts=[];
+    elseif isempty(batch_file.contrasts), wrongbatch = 1; msgErr='contrasts empty, check if contrasts needed (PLS type) or delete variable';
+    else contrasts = batch_file.contrasts;
     end;
-
-%     while ~isempty(rem)
-%         [tmp rem] = strtok(rem);
-%         this_row = [this_row str2num(tmp)];
-%     end
-% 
-%     if isempty(this_row)
-%         wrongbatch = 1;
-%         break;
-%     end
-% 
-%     if ~isempty(contrasts) & size(contrasts,2) ~= length(this_row)
-%         wrongbatch = 1;
-%         break;
-%     end
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
     
     
     % behavior_data
     if ~isfield (batch_file, 'behavdata'), behavdata=[];
-    elseif isempty(batch_file.behavdata), wrongbatch = 1; msgErr='behavdata empty';
+    elseif isempty(batch_file.behavdata), wrongbatch = 1; msgErr='behavdata empty, check if behavdata needed (PLS type) or delete variable';
     else behavdata = batch_file.behavdata;
     end
         
     % behavior_name
     if ~isfield (batch_file, 'behavname'), behavname=[];
-    elseif isempty(batch_file.behavname), wrongbatch = 1;  msgErr='behavname empty';
+    elseif isempty(batch_file.behavname), wrongbatch = 1;  msgErr='behavname empty, check if behavname needed (PLS type) or delete variable';
     else behavname = batch_file.behavname;
     end
     
