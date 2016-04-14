@@ -19,7 +19,7 @@ https://github.com/stef0en/PLS_toolbox_modified/tree/master/batch_matrix_input
 https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/master/batch_matrix_input
 
 
-# Conception of PLS input matrix
+# Structure of PLS input matrix
 
 
 1. Properties:
