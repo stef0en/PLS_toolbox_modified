@@ -38,6 +38,7 @@ function fmri_pls_analysis(varargin)
 %
 
   singledatamat = 0;		% init singledatamat to false
+  smallResult = varargin{23};
 
   if (nargin == 0),
      [SessionProfiles,ContrastFile,num_perm,group_analysis] = options_query;
@@ -303,8 +304,10 @@ function fmri_pls_analysis(varargin)
    % 
     
    % only for PLS with behavioral data
-   if method == 3 || method == 4 || method == 5 || method == 6
-
+   %if method == 3 || method == 4 || method == 5 || method == 6
+   
+   % selector for reduced result file
+   if smallResult == 1
        % Shrink data in respect to numbers of LV
        if lv_evt_list >= 10
            ii = 10;
