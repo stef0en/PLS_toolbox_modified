@@ -1,4 +1,4 @@
-## Read-in batch PLS fMRI analysis from MAT-file
+## Reduce result file size for behavioral PLS
 PLS toolbox (https://www.rotman-baycrest.on.ca/index.php?section=84)
 
 The results of PLS analyses containing very large behavioral data can easily exceed several GB and possibly reach the max. memory capacity of local computers. Therefore we reduced the result structure, produced by **fmri_pls_analysis.m**, to the first 10 LVs. This will keep the significant information but trimming the file size dramatically.
