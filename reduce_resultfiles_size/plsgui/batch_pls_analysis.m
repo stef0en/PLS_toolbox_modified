@@ -28,7 +28,7 @@ function batch_pls_analysis(batch_file)
    bscan = [];  
 
    wrongbatch = 0;
-
+   smallResult = 0;
 
    
     %% set up analyis
@@ -164,6 +164,14 @@ function batch_pls_analysis(batch_file)
         msgErr='behavname and behavdata have different sizes';
     end
     
+    
+    % small result file
+    if ~isfield(batch_file, 'smallResult'), smallResult = 0 ; 
+        fprintf('set: smallResult = 0');
+        elseif isempty(batch_file.smallResult), smallResult = 0; fprintf('set: smallResult = 0');
+    else smallResult = batch_file.smallResult;
+    end
+    
    
    %% check for errors and output infos
    if wrongbatch
@@ -249,6 +257,7 @@ function batch_pls_analysis(batch_file)
       PLSoptions.boot_type = boot_type;
       PLSoptions.nonrotated_boot = nonrotated_boot;
       PLSoptions.num_split = num_split;
+      PLSoptions.smallResult=smallResult;
 
       if exist('plslog.m','file')
          if length(first_file)>19 & strcmpi(first_file(end-19:end),'BfMRIsessiondata.mat')
@@ -558,7 +567,8 @@ function batch_pls_analysis(batch_file)
 				   PLSoptions.nonrotated_boot, ...
 				   PLSoptions.method, ...
 				   PLSoptions.output_file, ...
-				   PLSoptions.intel_system);
+				   PLSoptions.intel_system, ...
+                   PLSoptions.smallResult);
 
       if exist('progress_hdl','var') & ishandle(progress_hdl)
          close(progress_hdl);
