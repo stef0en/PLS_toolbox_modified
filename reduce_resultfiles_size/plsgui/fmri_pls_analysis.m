@@ -315,10 +315,13 @@ function fmri_pls_analysis(varargin)
        end
 
        result.u=result.u(:,1:ii);
+       result.s=result.s(1:ii,1);
        result.v=result.v(:,1:ii);
+       
+       result.lvcorrs=result.lvcorrs(:,1:ii);
+       
        result.usc=result.usc(:,1:ii);
        result.vsc=result.vsc(:,1:ii);
-
        result.stacked_behavdata=[];
 
        result.boot_result.distrib=[];
@@ -334,7 +337,7 @@ function fmri_pls_analysis(varargin)
        result.perm_result.sp=result.perm_result.sp(1:ii,1);
        result.perm_result.sprob=result.perm_result.sprob(1:ii,1);
 
-       result.lvcorrs=result.lvcorrs(:,1:ii);
+       
 
    end
   
