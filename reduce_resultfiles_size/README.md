@@ -5,6 +5,12 @@ The results of PLS analyses containing very large behavioral data can easily exc
 
 **Just works with PLS containing behavioral data.**
 
+**CAUTION trimming result matricies might corrupt some plotting functions**
+
+* NOT WORKING: Brain acores vs. behavioral data plot (probalby others as well)
+* WORKING: Single value plot
+
+
 # Altered functions
 1. **batch\_pls\_gui.m**
 	* evaluates an option variable in the input file (for more information see: batch_matrix_input; same repository). The variables __smallResult__ determines if the result file size has to be reduced.

@@ -23,7 +23,7 @@ PLS function edited: **splithalf\_perm\_par.m**
 	* Progress bar creates a file for counting. If more than one analysis are started in same folder, the counting will be corrupted!!!
 	* We modified progress bar code, so it will use an unique filename for each analysis.
 	
-Use **pls\_progrssbar\_** from this repository!
+Use **pls\_progrssbar\_** from this repository! Modified progress bar must be in your MATLAB path
 Replace **splithalf\_perm\_par.m** in PLS toolbox direcotry: __/PLS/plscmd/__
 
 

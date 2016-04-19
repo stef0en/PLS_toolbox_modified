@@ -1,5 +1,5 @@
 # Read me
-This repository contains customizations of the **PLS toolbox**. The demand to compute high resolution fMRI images with very large matricies of behavioral data made some adjustments to the toolbox necessary. E.g. can grow a result file easily above 30GB of size, making the visualization on desktop machines difficult.
+This repository contains customizations of the **PLS toolbox for MATLAB** . The demand to compute high resolution fMRI images with very large matricies of behavioral data made some adjustments to the toolbox necessary. E.g. can grow a result file easily above 30GB of size, making the visualization on desktop machines difficult.
 
 Focus was set on **Blocked fMRI** analyses. Some function might also work with other analyses like **E.R. fMRI**, **Strucktur**, **ERP** or **PET**. Only **Blocked fMRI** optinon has been tested. 
 
