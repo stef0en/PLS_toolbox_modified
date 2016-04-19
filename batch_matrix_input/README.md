@@ -1,5 +1,5 @@
 ## Read-in batch PLS fMRI analysis from MAT-file
-PLS toolbox (https://www.rotman-baycrest.on.ca/index.php?section=84) has the ability to start batch analysis from text-files. This has been proven unhandy when, for example large behavoiral data, made the text file grew very large.
+[PLS toolbox](https://www.rotman-baycrest.on.ca/index.php?section=84) has the ability to start batch analysis from text-files. This has been proven unhandy when, for example large behavoiral data, made the text file grew very large.
 
 Therefore we changed the code of 2 functions (**batch\_pls\_analysis.m** and **batch\_plsgui.m**) within the PLS toolbox to allow reading MATLAB structures. Those structures can be filled easily and dynamically with content of any size and kind.
 
