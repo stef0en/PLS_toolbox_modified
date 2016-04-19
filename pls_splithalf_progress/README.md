@@ -1,10 +1,11 @@
 #Progressbar for PLS splithalf option
 
-PLS splithalf option can, under certain circumstances, take very long to complete. The **splithalf** option does not display any progress, so we implemented a custom progress monitor, downloadable from MATLAB webpage.
+PLS splithalf option can, under certain circumstances, take very long to complete. The **splithalf** option does not display any progress, so we implemented a  progress monitor, downloadable from MATLAB webpage.
+Paralleized version of split half calcualtion automaticaly starts when a parallel pool on a cluster or lokal machine is created. See [here](http://de.mathworks.com/help/distcomp/parpool.html) for details.
 
-Parfor progress monitor was writte by Jeremy Scheff an can be used for any parallel loop in MATLAB. Download [here](http://www.mathworks.com/matlabcentral/fileexchange/32101-progress-monitor--progress-bar--that-works-with-parfor).
+Parfor progress monitor was writte by Jeremy Scheff and can be used for any parallel loop in MATLAB. Download [here](http://www.mathworks.com/matlabcentral/fileexchange/32101-progress-monitor--progress-bar--that-works-with-parfor).
 
-**This function works just for parallel settings.**
+**This modification only works for parallelized split half calculations.**
 
 PLS function edited: **splithalf\_perm\_par.m**
 
