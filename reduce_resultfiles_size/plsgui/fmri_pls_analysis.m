@@ -309,7 +309,7 @@ function fmri_pls_analysis(varargin)
    % selector for reduced result file
    if smallResult == 1
        % Shrink data in respect to numbers of LV
-       if lv_evt_list >= 10
+       if numel(lv_evt_list) >= 10
            ii = 10;
        else ii = numel(lv_evt_list);
        end
