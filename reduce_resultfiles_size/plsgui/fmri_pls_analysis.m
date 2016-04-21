@@ -295,58 +295,7 @@ function fmri_pls_analysis(varargin)
 
    result = pls_analysis(grp_datamat, num_subj_lst, num_conditions, opt);
 
-   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   %%
-   %    REDUCE RESULT SIZE
-   %
-   %    for large PLS analyses, the result file can easily grow to several
-   %    GB size and may exceed your computers memory.
-   % 
-    
-   % only for PLS with behavioral data
-   %if method == 3 || method == 4 || method == 5 || method == 6
-   
-   % selector for reduced result file
-   if smallResult == 1
-       % Shrink data in respect to numbers of LV
-       if numel(lv_evt_list) >= 10
-           ii = 10;
-       else ii = numel(lv_evt_list);
-       end
-
-       result.u=result.u(:,1:ii);
-       result.s=result.s(1:ii,1);
-       result.v=result.v(:,1:ii);
-       
-       result.lvcorrs=result.lvcorrs(:,1:ii);
-       
-       result.usc=result.usc(:,1:ii);
-       result.vsc=result.vsc(:,1:ii);
-       result.stacked_behavdata=[];
-
-       result.boot_result.distrib=[];
-       result.boot_result.compare_u=result.boot_result.compare_u(:,1:ii);
-       result.boot_result.u_se=result.boot_result.u_se(:,1:ii);
-       result.boot_result.orig_corr=result.boot_result.orig_corr(:,1:ii);
-       result.boot_result.ulcorr=result.boot_result.ulcorr(:,1:ii);
-       result.boot_result.llcorr=result.boot_result.llcorr(:,1:ii);
-       result.boot_result.ulcorr_adj=result.boot_result.ulcorr_adj(:,1:ii);
-       result.boot_result.llcorr_adj=result.boot_result.llcorr_adj(:,1:ii);
-       result.boot_result.prop=result.boot_result.prop(:,1:ii);
-
-       result.perm_result.sp=result.perm_result.sp(1:ii,1);
-       result.perm_result.sprob=result.perm_result.sprob(1:ii,1);
-
-       
-
-   end
   
-   
-   %
-   %
-   %
-   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   %%
    
    %  Either used "single" in analysis or had "single" in datamat
    %
@@ -939,6 +888,64 @@ end
      done = 0;
   end
 
+  
+   
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %%
+   %    REDUCE RESULT SIZE
+   %
+   %    for large PLS analyses, the result file can easily grow to several
+   %    GB size and may exceed your computers memory.
+   % 
+    
+   % only for PLS with behavioral data
+   %if method == 3 || method == 4 || method == 5 || method == 6
+   
+   % selector for reduced result file
+   if smallResult == 1
+       % Shrink data in respect to numbers of LV
+       if numel(lv_evt_list) >= 10
+           ii = 10;
+       else ii = numel(lv_evt_list);
+       end
+
+       result.u=result.u(:,1:ii);
+       result.s=result.s(1:ii,1);
+       result.v=result.v(:,1:ii);
+       
+       result.lvcorrs=result.lvcorrs(:,1:ii);
+       
+       result.usc=result.usc(:,1:ii);
+       result.vsc=result.vsc(:,1:ii);
+       
+       result.stacked_behavdata=result.stacked_behavdata(:, 1:ii);
+       result.boot_result.distrib=result.boot_result.distrib(1:ii, 1:ii, :);
+       
+       result.boot_result.compare_u=result.boot_result.compare_u(:,1:ii);
+       result.boot_result.u_se=result.boot_result.u_se(:,1:ii);
+       result.boot_result.orig_corr=result.boot_result.orig_corr(:,1:ii);
+       result.boot_result.ulcorr=result.boot_result.ulcorr(:,1:ii);
+       result.boot_result.llcorr=result.boot_result.llcorr(:,1:ii);
+       result.boot_result.ulcorr_adj=result.boot_result.ulcorr_adj(:,1:ii);
+       result.boot_result.llcorr_adj=result.boot_result.llcorr_adj(:,1:ii);
+       result.boot_result.prop=result.boot_result.prop(:,1:ii);
+
+       result.perm_result.sp=result.perm_result.sp(1:ii,1);
+       result.perm_result.sprob=result.perm_result.sprob(1:ii,1);
+
+       
+
+   end
+  
+   
+   %
+   %
+   %
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %%
+  
+  
+  
   while ~done
     try
        eval(['save ''' resultFile ''' ' saved_info]);
@@ -963,6 +970,8 @@ end
     end
   end
 
+ 
+  
   return; 					% fmri_pls_analysis
 
 
