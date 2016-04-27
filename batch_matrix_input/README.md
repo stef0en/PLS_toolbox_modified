@@ -28,9 +28,9 @@ https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/master/
 
 
 2. Structure of _XXX\_BfMRIanalysis.mat_
-	* contains a structure **batch\_analysis**
+	* contains a structure **batch\_file**
 		* is\_analyis: binary **true if analysis, false if datamat creation**
-		* result\_file: char **XXX\_BfMRIresult.mat or XXX\_MODELresult.mat)**
+		* result\_file: char **XXX\_BfMRIresult.mat or XXX\_MODELresult.mat**
 			> Note: 
 			> Result file must be listed first, and must follow the file
 			> name format of xxxx_yyyyresult.mat, where xxxx stands for
