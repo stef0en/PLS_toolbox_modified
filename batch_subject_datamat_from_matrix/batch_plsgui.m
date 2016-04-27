@@ -22,11 +22,7 @@ function batch_plsgui(varargin)
       if batch_file.is_analysis==true
          batch_pls_analysis(batch_file);
       else
-          
-          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-          %% NOT DONE YET!!!!
           batch_create_datamat(batch_file);
-          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       end
    end
 
