@@ -1,5 +1,6 @@
-function batch_create_datamat(fid)
+function batch_create_datamat(batch_file)
 
+   %% initalize variables
    session.prefix = '';				% all
    session.dataset_path = '';			% struct
    session.brain_region = '';			% all but [erp fc]
@@ -19,7 +20,7 @@ function batch_create_datamat(fid)
    subj_file = {};				% erp, pet, struct, fc
    session.subject = {};			% erp, pet, struct, fc
    session.subj_name = {};			% erp, pet, struct, fc
-   session.subj_files = {};			% erp, pet, struct, fc
+   session.subj_file = {};			% erp, pet, struct, fc
    session.img_ext = '*.img';			% pet, struct
    session.chan_in_col = 0;			% erp
 
@@ -42,153 +43,240 @@ function batch_create_datamat(fid)
 
    wrongbatch = 0;
 
-   while ~feof(fid)
+  
+ 
+   
+%    while ~feof(fid)
+% 
+%       tmp = fgetl(fid);
+% 
+%       if ischar(tmp) & ~isempty(tmp)
+%          tmp = strrep(tmp, char(9), ' ');
+% %         tmp = deblank(fliplr(deblank(fliplr(tmp))));
+%          tmp = deblank(strjust(tmp, 'left'));
+%       end
+% 
+%       while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
+%          tmp = fgetl(fid);
+% 
+%          if ischar(tmp) & ~isempty(tmp)
+%             tmp = strrep(tmp, char(9), ' ');
+%             tmp = deblank(strjust(tmp, 'left'));
+%          end
+%       end
+% 
+%       if ischar(tmp) & ~isempty(tmp)
+%          [tok rem] = strtok(tmp);
+% 
+%          if ~isempty(rem)
+%             [rem junk] = strtok(rem, '%');
+%             rem = deblank(strjust(rem, 'left'));
+%          end
+%       else
+%          tok = '';
+%       end
+% 
+%       switch tok
+%       case 'prefix'
 
-      tmp = fgetl(fid);
-
-      if ischar(tmp) & ~isempty(tmp)
-         tmp = strrep(tmp, char(9), ' ');
-%         tmp = deblank(fliplr(deblank(fliplr(tmp))));
-         tmp = deblank(strjust(tmp, 'left'));
-      end
-
-      while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
-         tmp = fgetl(fid);
-
-         if ischar(tmp) & ~isempty(tmp)
-            tmp = strrep(tmp, char(9), ' ');
-            tmp = deblank(strjust(tmp, 'left'));
-         end
-      end
-
-      if ischar(tmp) & ~isempty(tmp)
-         [tok rem] = strtok(tmp);
-
-         if ~isempty(rem)
-            [rem junk] = strtok(rem, '%');
-            rem = deblank(strjust(rem, 'left'));
-         end
-      else
-         tok = '';
-      end
-
-      switch tok
-      case 'prefix'
-         if isempty(rem), wrongbatch = 1; end;
-         session.prefix = rem;
-      case 'dataset_path'
-         if isempty(rem), wrongbatch = 1; end;
-         session.dataset_path = rem;
-      case 'brain_region'
-         if isempty(rem), wrongbatch = 1; end;
-
-         if isempty(str2num(rem))
-            session.brain_region = rem;
-         else
-            session.brain_region = str2num(rem);
-         end
-      case 'win_size'
-         session.win_size = str2num(rem);
-         if isempty(session.win_size), session.win_size = 8; end;
-      case 'across_run'
-         session.across_run = str2num(rem);
-         if isempty(session.across_run), session.across_run = 1; end;
-      case 'single_subj'
-         session.single_subj = str2num(rem);
-         if isempty(session.single_subj), session.single_subj = 0; end;
-      case 'single_ref_scan'
-         session.single_ref_scan = str2num(rem);
-         if isempty(session.single_ref_scan), session.single_ref_scan = 0; end;
-      case 'single_ref_onset'
-         session.single_ref_onset = str2num(rem);
-         if isempty(session.single_ref_onset), session.single_ref_onset = 0; end;
-      case 'single_ref_number'
-         session.single_ref_number = str2num(rem);
-         if isempty(session.single_ref_number), session.single_ref_number = 1; end;
-      case 'cond_name'
-         if isempty(rem), wrongbatch = 1; end;
-         session.cond_name = [session.cond_name {rem}];
-      case 'cond_filter'
-         if isempty(rem), wrongbatch = 1; end;
-         session.cond_filter = [session.cond_filter {rem}];
-      case 'ref_scan_onset'
-         rem = str2num(rem);
-         if isempty(rem), rem = 0; end;
-         ref_scan_onset = [ref_scan_onset rem];
-      case 'num_ref_scan'
-         rem = str2num(rem);
-         if isempty(rem), rem = 1; end;
-         num_ref_scan = [num_ref_scan rem];
-      case 'data_files'
-         session.data_files = [session.data_files {rem}];
-      case 'event_onsets'
-         if isempty(rem), wrongbatch = 1; end;
-         event_onsets = [event_onsets {str2num(rem)}];
-      case 'block_onsets'
-         if isempty(rem), wrongbatch = 1; end;
-         block_onsets = [block_onsets {str2num(rem)}];
-      case 'block_length'
-         if isempty(rem), wrongbatch = 1; end;
-         block_length = [block_length {str2num(rem)}];
-      case 'prestim'
-         session.prestim = str2num(rem);
-         if isempty(session.prestim), session.prestim = 0; end;
-      case 'interval'
-         session.interval = str2num(rem);
-         if isempty(session.interval), session.interval = 2; end;
-      case 'chan_order'
-         if isempty(rem), wrongbatch = 1; end;
-         session.chan_order = str2num(rem);
-      case 'system_class'
-         system_class = str2num(rem);
-         if isempty(system_class), system_class = 1; end;
-      case 'system_type'
-         system_type = str2num(rem);
-         if isempty(system_type), system_type = 1; end;
-      case 'binary_vendor'
-         binary_vendor = rem;
-         if ~strcmpi(binary_vendor, 'NeuroScan') & ...
-		~strcmpi(binary_vendor, 'ANT') & ...
-		~strcmpi(binary_vendor, 'EGI')
-            binary_vendor = '';
-         end
-      case 'binary_endian'
-         binary_endian = rem;
-         if ~strcmpi(binary_endian, 'ieee-be') & ~strcmpi(binary_endian, 'b') ...
-	& ~strcmpi(binary_endian, 'ieee-le.l64') & ~strcmpi(binary_endian, 'a') ...
-	& ~strcmpi(binary_endian, 'ieee-be.l64') & ~strcmpi(binary_endian, 's') ...
-	& ~strcmpi(binary_endian, 'vaxd') & ~strcmpi(binary_endian, 'd') ...
-	& ~strcmpi(binary_endian, 'vaxg') & ~strcmpi(binary_endian, 'g') ...
-	& ~strcmpi(binary_endian, 'cray') & ~strcmpi(binary_endian, 'c') ...
-	& ~strcmpi(binary_endian, 'native') & ~strcmpi(binary_endian, 'n')
-            binary_endian = 'ieee-le';
-         end
-      case 'chan_in_col'
-         session.chan_in_col = str2num(rem);
-         if isempty(session.chan_in_col), session.chan_in_col = 0; end;
-      case 'subj_name'
-         if isempty(rem), wrongbatch = 1; end;
-         session.subj_name = [session.subj_name {rem}];
-      case 'subj_file'
-         if isempty(rem), wrongbatch = 1; end;
-         subj_file = [subj_file {rem}];
-      case 'normalize'
-         if isempty(rem), wrongbatch = 1; end;
-         session.normalize = str2num(rem);
-      case 'dims'
-         if isempty(rem), wrongbatch = 1; end;
-         session.dims = str2num(rem);
-      end
-   end
-
-   fclose(fid);
-
-   if wrongbatch
-      error('There is error(s) in batch file, please read ''UserGuide.htm'' for help');
+   %% set up batch file
+   %prefix; all
+   if ~isfield(batch_file, 'prefix'), wrongbatch = 1; msgErr='prefix missing in input';
+   elseif isempty(batch_file.prefix), wrongbatch = 1; msgErr='prefix empty';
+   else session.prefix = batch_file.prefix;
    end  
 
-   session.num_cond = length(session.cond_name);
+   %dataset_path; struct
+   if ~isfield(batch_file, 'dataset_path'), wrongbatch = 1; msgErr='dataset_path missing in input';
+   elseif isempty(batch_file.dataset_path), wrongbatch = 1; msgErr='dataset_path empty';
+   else session.dataset_path = batch_file.dataset_path;
+   end
+  
+   %brain_region; all but [erp fc]
+   if ~isfield(batch_file, 'brain_region'), wrongbatch = 1; msgErr='brain_region missing in input';
+   elseif isempty(batch_file.brain_region), wrongbatch = 1; msgErr='brain_region empty';
+   else session.brain_region = batch_file.brain_region;
+   end
 
+   %win_size; fmri
+   if ~isfield(batch_file, 'win_size'), session.win_size = 8; msg0='win_size set to 8';
+   elseif isempty(batch_file.win_size), session.win_size = 8; msg0='win_size set to 8';
+   else session.win_size = batch_file.win_size;
+   end
+
+   %across_run; mri
+   if ~isfield(batch_file, 'across_run'), session.across_run = 1; msg0='across_run set to 1';
+   elseif isempty(batch_file.across_run), session.across_run = 1; msg0='across_run set to 1';
+   else session.across_run = batch_file.across_run;
+   end
+
+   %single_subj; mri
+   if ~isfield(batch_file, 'single_subj'), session.single_subj = 0; msg0='single_subj set to 0';
+   elseif isempty(batch_file.single_subj), session.single_subj = 0; msg0='single_subj set to 0';
+   else session.single_subj = batch_file.single_subj;
+   end
+   
+   %single_ref_scan; mri
+   if ~isfield(batch_file, 'single_ref_scan'), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
+   elseif isempty(batch_file.single_ref_scan), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
+   else session.single_ref_scan = batch_file.single_ref_scan;
+   end  
+   
+   %single_ref_onset; mri
+   if ~isfield(batch_file, 'single_ref_onset'), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
+   elseif isempty(batch_file.single_ref_onset), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
+   else session.single_ref_onset = batch_file.single_ref_onset;
+   end  
+      
+   %single_ref_number; mri
+   if ~isfield(batch_file, 'single_ref_number'), session.single_ref_number = 1; msg0='single_ref_number set to 1';
+   elseif isempty(batch_file.single_ref_number), session.single_ref_number = 1; msg0='single_ref_number set to 1';
+   else session.single_ref_number = batch_file.single_ref_number;
+   end  
+      
+   %cond_name; all
+   if ~isfield(batch_file, 'cond_name'), wrongbatch = 1; msgErr='cond_name missing in input';
+   elseif isempty(batch_file.cond_name), wrongbatch = 1; msgErr='cond_name empty';
+   else session.cond_name = batch_file.cond_name;
+   end   
+     
+   %cond_filter; struct
+   if ~isfield(batch_file, 'cond_filter'), wrongbatch = 1; msgErr='cond_filter missing in input';
+   elseif isempty(batch_file.cond_filter), wrongbatch = 1; msgErr='cond_filter empty';
+   else session.cond_filter = batch_file.cond_filter;
+   end
+   
+   %ref_scan_onset; mri
+   if ~isfield(batch_file, 'ref_scan_onset'), ref_scan_onset = 0; msg0='ref_scan_onset set to 0';
+   elseif isempty(batch_file.ref_scan_onset), ref_scan_onset = 0; msg0='ref_scan_onset set to 0';
+   else ref_scan_onset = batch_file.ref_scan_onset;
+   end   
+
+   %num_ref_scan; mri
+   if ~isfield(batch_file, 'num_ref_scan'), num_ref_scan = 1; msg0='num_ref_scan set to 1';
+   elseif isempty(batch_file.num_ref_scan), num_ref_scan = 1; msg0='num_ref_scan set to 1';
+   else num_ref_scan = batch_file.num_ref_scan;
+   end  
+   
+   %data_files; mri
+   if ~isfield(batch_file, 'data_files'), wrongbatch = 1; msgErr='data_files missing in input';
+   elseif isempty(batch_file.data_files), wrongbatch = 1; msgErr='data_files empty';
+   else session.data_files = batch_file.data_files;
+   end 
+   
+   %event_onsets; fmri
+   if ~isfield(batch_file, 'event_onsets'), wrongbatch = 1; msgErr='event_onsets missing in input';
+   elseif isempty(batch_file.event_onsets), wrongbatch = 1; msgErr='event_onsets empty';
+   else event_onsets = batch_file.event_onsets;
+   end
+   
+   %block_onsets; bfm
+   if ~isfield(batch_file, 'block_onsets'), wrongbatch = 1; msgErr='block_onsets missing in input';
+   elseif isempty(batch_file.block_onsets), wrongbatch = 1; msgErr='block_onsets empty';
+   else block_onsets = batch_file.block_onsets;
+   end
+   
+   %block_length; bfm
+   if ~isfield(batch_file, 'block_length'), wrongbatch = 1; msgErr='block_length missing in input';
+   elseif isempty(batch_file.block_length), wrongbatch = 1; msgErr='block_length empty';
+   else block_length = batch_file.block_length;
+   end
+
+   %prestim; erp
+   if ~isfield(batch_file, 'prestim'), session.prestim = 0; msg0='prestim set to 0';
+   elseif isempty(batch_file.prestim), session.prestim = 0; msg0='prestim set to 0';
+   else session.prestim = batch_file.prestim;
+   end  
+   
+   %interval; erp
+   if ~isfield(batch_file, 'interval'), session.interval = 2; msg0='interval set to 2';
+   elseif isempty(batch_file.interval), session.interval = 2; msg0='interval set to 2';
+   else session.interval = batch_file.interval;
+   end  
+   
+   %chan_order; erp
+   if ~isfield(batch_file, 'chan_order'), wrongbatch = 1; msgErr='chan_order missing in input';
+   elseif isempty(batch_file.chan_order), wrongbatch = 1; msgErr='chan_order empty';
+   else session.chan_order = batch_file.chan_order;
+   end
+
+   %system_class; erp
+   if ~isfield(batch_file, 'system_class'), system_class = 1; msg0='system_class set to 1';
+   elseif isempty(batch_file.system_class), system_class = 1; msg0='system_class set to 1';
+   else system_class = batch_file.system_class;
+   end 
+
+   %system_type; erp
+   if ~isfield(batch_file, 'system_type'), system_type = 1; msg0='system_type set to 1';
+   elseif isempty(batch_file.system_type), system_type = 1; msg0='system_type set to 1';
+   else system_type = batch_file.system_type;
+   end 
+     
+   
+%       case 'binary_vendor'
+%          binary_vendor = rem;
+%          if ~strcmpi(binary_vendor, 'NeuroScan') & ...
+% 		~strcmpi(binary_vendor, 'ANT') & ...
+% 		~strcmpi(binary_vendor, 'EGI')
+%             binary_vendor = '';
+%          end
+%       case 'binary_endian'
+%          binary_endian = rem;
+%          if ~strcmpi(binary_endian, 'ieee-be') & ~strcmpi(binary_endian, 'b') ...
+% 	& ~strcmpi(binary_endian, 'ieee-le.l64') & ~strcmpi(binary_endian, 'a') ...
+% 	& ~strcmpi(binary_endian, 'ieee-be.l64') & ~strcmpi(binary_endian, 's') ...
+% 	& ~strcmpi(binary_endian, 'vaxd') & ~strcmpi(binary_endian, 'd') ...
+% 	& ~strcmpi(binary_endian, 'vaxg') & ~strcmpi(binary_endian, 'g') ...
+% 	& ~strcmpi(binary_endian, 'cray') & ~strcmpi(binary_endian, 'c') ...
+% 	& ~strcmpi(binary_endian, 'native') & ~strcmpi(binary_endian, 'n')
+%             binary_endian = 'ieee-le';
+%          end
+         
+   %chan_in_col; erp
+   if ~isfield(batch_file, 'chan_in_col'), session.chan_in_col = 0; msg0='chan_in_col set to 0';
+   elseif isempty(batch_file.chan_in_col), session.chan_in_col = 0; msg0='chan_in_col set to 0';
+   else session.chan_in_col = batch_file.chan_in_col;
+   end 
+   
+   %subj_name; erp, pet, struct, fc
+   if ~isfield(batch_file, 'subj_name'), wrongbatch = 1; msgErr='subj_name missing in input';
+   elseif isempty(batch_file.subj_name), wrongbatch = 1; msgErr='subj_name empty';
+   else session.subj_name = batch_file.subj_name;
+   end
+   
+   %subj_file; erp, pet, struct, fc
+   if ~isfield(batch_file, 'subj_file'), wrongbatch = 1; msgErr='subj_file missing in input';
+   elseif isempty(batch_file.subj_file), wrongbatch = 1; msgErr='subj_file empty';
+   else session.subj_file = batch_file.subj_file;
+   end
+   
+   %normalize; all but [erp fc]
+   if ~isfield(batch_file, 'normalize'), wrongbatch = 1; msgErr='normalize missing in input';
+   elseif isempty(batch_file.normalize), wrongbatch = 1; msgErr='normalize empty';
+   else session.normalize = batch_file.normalize;
+   end
+   
+   %dims; fc
+   if ~isfield(batch_file, 'dims'), wrongbatch = 1; msgErr='dims missing in input';
+   elseif isempty(batch_file.dims), wrongbatch = 1; msgErr='dims empty';
+   else session.dims = batch_file.dims;
+   end
+   
+
+   %% check for errors and output infos
+
+   if wrongbatch
+      fprintf('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/batch_subject_datamat_from_matrix \n\n');
+      error(msgErr);
+      return;
+   end  
+
+   session.num_cond = length(batch_file.cond_name);
+
+   
+   
+   %% untouched script...
+   
    if ~isempty(event_onsets)					% fmri
 
       if wrongbatch | isempty(session.data_files)
@@ -444,7 +532,7 @@ function create_fmri_datamat(session)
    session_info.behavdata_each_single = [];
 
    filename = [session.prefix '_fMRIsessiondata.mat'];
-   session_file = fullfile(session_info.pls_data_path, filename);
+   batch_file = fullfile(session_info.pls_data_path, filename);
 
    %  create datamat
    %  ==============
@@ -493,7 +581,7 @@ function create_fmri_datamat(session)
    end
 
    orient = [];
-   progress_hdl = rri_progress_status('create', ['Processing "' session_file '"']);
+   progress_hdl = rri_progress_status('create', ['Processing "' batch_file '"']);
 
    options.RunsIncluded = 1:session.num_run;
    options.MaxStdDev = 4;
@@ -628,7 +716,7 @@ function create_bfm_datamat(session)
    session_info.behavdata_each_single = [];
 
    filename = [session.prefix '_BfMRIsessiondata.mat'];
-   session_file = fullfile(session_info.pls_data_path, filename);
+   batch_file = fullfile(session_info.pls_data_path, filename);
 
    %  create datamat
    %  ==============
@@ -684,7 +772,7 @@ function create_bfm_datamat(session)
    end
 
    orient = [];
-   progress_hdl = rri_progress_status('create', ['Processing "' session_file '"']);
+   progress_hdl = rri_progress_status('create', ['Processing "' batch_file '"']);
 
    options.RunsIncluded = 1:session.num_run;
    options.MaxStdDev = 4;

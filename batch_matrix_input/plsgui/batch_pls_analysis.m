@@ -167,7 +167,7 @@ function batch_pls_analysis(batch_file)
    
    %% check for errors and output infos
    if wrongbatch
-      fprintf('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/output2textfile/batch_matrix_input \n\n') 
+      fprintf('There is error(s) in batch file, please read ''UserGuide.htm'' for help or see README at https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/batch_matrix_input \n\n') 
       error(msgErr);
       return;
    end
