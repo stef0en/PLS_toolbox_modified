@@ -44,40 +44,7 @@ function batch_create_datamat(batch_file)
    wrongbatch = 0;
 
   
- 
-   
-%    while ~feof(fid)
-% 
-%       tmp = fgetl(fid);
-% 
-%       if ischar(tmp) & ~isempty(tmp)
-%          tmp = strrep(tmp, char(9), ' ');
-% %         tmp = deblank(fliplr(deblank(fliplr(tmp))));
-%          tmp = deblank(strjust(tmp, 'left'));
-%       end
-% 
-%       while ~feof(fid) & (isempty(tmp) | isnumeric(tmp) | strcmpi(tmp(1), '%'))
-%          tmp = fgetl(fid);
-% 
-%          if ischar(tmp) & ~isempty(tmp)
-%             tmp = strrep(tmp, char(9), ' ');
-%             tmp = deblank(strjust(tmp, 'left'));
-%          end
-%       end
-% 
-%       if ischar(tmp) & ~isempty(tmp)
-%          [tok rem] = strtok(tmp);
-% 
-%          if ~isempty(rem)
-%             [rem junk] = strtok(rem, '%');
-%             rem = deblank(strjust(rem, 'left'));
-%          end
-%       else
-%          tok = '';
-%       end
-% 
-%       switch tok
-%       case 'prefix'
+
 
    %% set up batch file
    %prefix; all
@@ -86,23 +53,23 @@ function batch_create_datamat(batch_file)
    else session.prefix = batch_file.prefix;
    end  
 
-   %dataset_path; struct
-   if ~isfield(batch_file, 'dataset_path'), wrongbatch = 1; msgErr='dataset_path missing in input';
-   elseif isempty(batch_file.dataset_path), wrongbatch = 1; msgErr='dataset_path empty';
-   else session.dataset_path = batch_file.dataset_path;
-   end
+%    %dataset_path; struct
+%    if ~isfield(batch_file, 'dataset_path'), wrongbatch = 1; msgErr='dataset_path missing in input';
+%    elseif isempty(batch_file.dataset_path), wrongbatch = 1; msgErr='dataset_path empty';
+%    else session.dataset_path = batch_file.dataset_path;
+%    end
   
-   %brain_region; all but [erp fc]
-   if ~isfield(batch_file, 'brain_region'), wrongbatch = 1; msgErr='brain_region missing in input';
-   elseif isempty(batch_file.brain_region), wrongbatch = 1; msgErr='brain_region empty';
-   else session.brain_region = batch_file.brain_region;
-   end
+%    %brain_region; all but [erp fc]
+%    if ~isfield(batch_file, 'brain_region'), wrongbatch = 1; msgErr='brain_region missing in input';
+%    elseif isempty(batch_file.brain_region), wrongbatch = 1; msgErr='brain_region empty';
+%    else session.brain_region = batch_file.brain_region;
+%    end
 
-   %win_size; fmri
-   if ~isfield(batch_file, 'win_size'), session.win_size = 8; msg0='win_size set to 8';
-   elseif isempty(batch_file.win_size), session.win_size = 8; msg0='win_size set to 8';
-   else session.win_size = batch_file.win_size;
-   end
+%    %win_size; fmri
+%    if ~isfield(batch_file, 'win_size'), session.win_size = 8; msg0='win_size set to 8';
+%    elseif isempty(batch_file.win_size), session.win_size = 8; msg0='win_size set to 8';
+%    else session.win_size = batch_file.win_size;
+%    end
 
    %across_run; mri
    if ~isfield(batch_file, 'across_run'), session.across_run = 1; msg0='across_run set to 1';
@@ -110,29 +77,29 @@ function batch_create_datamat(batch_file)
    else session.across_run = batch_file.across_run;
    end
 
-   %single_subj; mri
-   if ~isfield(batch_file, 'single_subj'), session.single_subj = 0; msg0='single_subj set to 0';
-   elseif isempty(batch_file.single_subj), session.single_subj = 0; msg0='single_subj set to 0';
-   else session.single_subj = batch_file.single_subj;
-   end
+%    %single_subj; mri
+%    if ~isfield(batch_file, 'single_subj'), session.single_subj = 0; msg0='single_subj set to 0';
+%    elseif isempty(batch_file.single_subj), session.single_subj = 0; msg0='single_subj set to 0';
+%    else session.single_subj = batch_file.single_subj;
+%    end
    
-   %single_ref_scan; mri
-   if ~isfield(batch_file, 'single_ref_scan'), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
-   elseif isempty(batch_file.single_ref_scan), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
-   else session.single_ref_scan = batch_file.single_ref_scan;
-   end  
+%    %single_ref_scan; mri
+%    if ~isfield(batch_file, 'single_ref_scan'), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
+%    elseif isempty(batch_file.single_ref_scan), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
+%    else session.single_ref_scan = batch_file.single_ref_scan;
+%    end  
    
-   %single_ref_onset; mri
-   if ~isfield(batch_file, 'single_ref_onset'), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
-   elseif isempty(batch_file.single_ref_onset), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
-   else session.single_ref_onset = batch_file.single_ref_onset;
-   end  
+%    %single_ref_onset; mri
+%    if ~isfield(batch_file, 'single_ref_onset'), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
+%    elseif isempty(batch_file.single_ref_onset), session.single_ref_onset = 0; msg0='single_ref_onset set to 0';
+%    else session.single_ref_onset = batch_file.single_ref_onset;
+%    end  
       
-   %single_ref_number; mri
-   if ~isfield(batch_file, 'single_ref_number'), session.single_ref_number = 1; msg0='single_ref_number set to 1';
-   elseif isempty(batch_file.single_ref_number), session.single_ref_number = 1; msg0='single_ref_number set to 1';
-   else session.single_ref_number = batch_file.single_ref_number;
-   end  
+%    %single_ref_number; mri
+%    if ~isfield(batch_file, 'single_ref_number'), session.single_ref_number = 1; msg0='single_ref_number set to 1';
+%    elseif isempty(batch_file.single_ref_number), session.single_ref_number = 1; msg0='single_ref_number set to 1';
+%    else session.single_ref_number = batch_file.single_ref_number;
+%    end  
       
    %cond_name; all
    if ~isfield(batch_file, 'cond_name'), wrongbatch = 1; msgErr='cond_name missing in input';
@@ -140,11 +107,11 @@ function batch_create_datamat(batch_file)
    else session.cond_name = batch_file.cond_name;
    end   
      
-   %cond_filter; struct
-   if ~isfield(batch_file, 'cond_filter'), wrongbatch = 1; msgErr='cond_filter missing in input';
-   elseif isempty(batch_file.cond_filter), wrongbatch = 1; msgErr='cond_filter empty';
-   else session.cond_filter = batch_file.cond_filter;
-   end
+%    %cond_filter; struct
+%    if ~isfield(batch_file, 'cond_filter'), wrongbatch = 1; msgErr='cond_filter missing in input';
+%    elseif isempty(batch_file.cond_filter), wrongbatch = 1; msgErr='cond_filter empty';
+%    else session.cond_filter = batch_file.cond_filter;
+%    end
    
    %ref_scan_onset; mri
    if ~isfield(batch_file, 'ref_scan_onset'), ref_scan_onset = 0; msg0='ref_scan_onset set to 0';
@@ -164,11 +131,11 @@ function batch_create_datamat(batch_file)
    else session.data_files = batch_file.data_files;
    end 
    
-   %event_onsets; fmri
-   if ~isfield(batch_file, 'event_onsets'), wrongbatch = 1; msgErr='event_onsets missing in input';
-   elseif isempty(batch_file.event_onsets), wrongbatch = 1; msgErr='event_onsets empty';
-   else event_onsets = batch_file.event_onsets;
-   end
+%    %event_onsets; fmri
+%    if ~isfield(batch_file, 'event_onsets'), wrongbatch = 1; msgErr='event_onsets missing in input';
+%    elseif isempty(batch_file.event_onsets), wrongbatch = 1; msgErr='event_onsets empty';
+%    else event_onsets = batch_file.event_onsets;
+%    end
    
    %block_onsets; bfm
    if ~isfield(batch_file, 'block_onsets'), wrongbatch = 1; msgErr='block_onsets missing in input';
@@ -182,35 +149,35 @@ function batch_create_datamat(batch_file)
    else block_length = batch_file.block_length;
    end
 
-   %prestim; erp
-   if ~isfield(batch_file, 'prestim'), session.prestim = 0; msg0='prestim set to 0';
-   elseif isempty(batch_file.prestim), session.prestim = 0; msg0='prestim set to 0';
-   else session.prestim = batch_file.prestim;
-   end  
+%    %prestim; erp
+%    if ~isfield(batch_file, 'prestim'), session.prestim = 0; msg0='prestim set to 0';
+%    elseif isempty(batch_file.prestim), session.prestim = 0; msg0='prestim set to 0';
+%    else session.prestim = batch_file.prestim;
+%    end  
    
-   %interval; erp
-   if ~isfield(batch_file, 'interval'), session.interval = 2; msg0='interval set to 2';
-   elseif isempty(batch_file.interval), session.interval = 2; msg0='interval set to 2';
-   else session.interval = batch_file.interval;
-   end  
+%    %interval; erp
+%    if ~isfield(batch_file, 'interval'), session.interval = 2; msg0='interval set to 2';
+%    elseif isempty(batch_file.interval), session.interval = 2; msg0='interval set to 2';
+%    else session.interval = batch_file.interval;
+%    end  
    
-   %chan_order; erp
-   if ~isfield(batch_file, 'chan_order'), wrongbatch = 1; msgErr='chan_order missing in input';
-   elseif isempty(batch_file.chan_order), wrongbatch = 1; msgErr='chan_order empty';
-   else session.chan_order = batch_file.chan_order;
-   end
+%    %chan_order; erp
+%    if ~isfield(batch_file, 'chan_order'), wrongbatch = 1; msgErr='chan_order missing in input';
+%    elseif isempty(batch_file.chan_order), wrongbatch = 1; msgErr='chan_order empty';
+%    else session.chan_order = batch_file.chan_order;
+%    end
 
-   %system_class; erp
-   if ~isfield(batch_file, 'system_class'), system_class = 1; msg0='system_class set to 1';
-   elseif isempty(batch_file.system_class), system_class = 1; msg0='system_class set to 1';
-   else system_class = batch_file.system_class;
-   end 
+%    %system_class; erp
+%    if ~isfield(batch_file, 'system_class'), system_class = 1; msg0='system_class set to 1';
+%    elseif isempty(batch_file.system_class), system_class = 1; msg0='system_class set to 1';
+%    else system_class = batch_file.system_class;
+%    end 
 
-   %system_type; erp
-   if ~isfield(batch_file, 'system_type'), system_type = 1; msg0='system_type set to 1';
-   elseif isempty(batch_file.system_type), system_type = 1; msg0='system_type set to 1';
-   else system_type = batch_file.system_type;
-   end 
+%    %system_type; erp
+%    if ~isfield(batch_file, 'system_type'), system_type = 1; msg0='system_type set to 1';
+%    elseif isempty(batch_file.system_type), system_type = 1; msg0='system_type set to 1';
+%    else system_type = batch_file.system_type;
+%    end 
      
    
 %       case 'binary_vendor'
@@ -232,35 +199,35 @@ function batch_create_datamat(batch_file)
 %             binary_endian = 'ieee-le';
 %          end
          
-   %chan_in_col; erp
-   if ~isfield(batch_file, 'chan_in_col'), session.chan_in_col = 0; msg0='chan_in_col set to 0';
-   elseif isempty(batch_file.chan_in_col), session.chan_in_col = 0; msg0='chan_in_col set to 0';
-   else session.chan_in_col = batch_file.chan_in_col;
-   end 
+%    %chan_in_col; erp
+%    if ~isfield(batch_file, 'chan_in_col'), session.chan_in_col = 0; msg0='chan_in_col set to 0';
+%    elseif isempty(batch_file.chan_in_col), session.chan_in_col = 0; msg0='chan_in_col set to 0';
+%    else session.chan_in_col = batch_file.chan_in_col;
+%    end 
    
-   %subj_name; erp, pet, struct, fc
-   if ~isfield(batch_file, 'subj_name'), wrongbatch = 1; msgErr='subj_name missing in input';
-   elseif isempty(batch_file.subj_name), wrongbatch = 1; msgErr='subj_name empty';
-   else session.subj_name = batch_file.subj_name;
-   end
+%    %subj_name; erp, pet, struct, fc
+%    if ~isfield(batch_file, 'subj_name'), wrongbatch = 1; msgErr='subj_name missing in input';
+%    elseif isempty(batch_file.subj_name), wrongbatch = 1; msgErr='subj_name empty';
+%    else session.subj_name = batch_file.subj_name;
+%    end
    
-   %subj_file; erp, pet, struct, fc
-   if ~isfield(batch_file, 'subj_file'), wrongbatch = 1; msgErr='subj_file missing in input';
-   elseif isempty(batch_file.subj_file), wrongbatch = 1; msgErr='subj_file empty';
-   else session.subj_file = batch_file.subj_file;
-   end
+%    %subj_file; erp, pet, struct, fc
+%    if ~isfield(batch_file, 'subj_file'), wrongbatch = 1; msgErr='subj_file missing in input';
+%    elseif isempty(batch_file.subj_file), wrongbatch = 1; msgErr='subj_file empty';
+%    else session.subj_file = batch_file.subj_file;
+%    end
    
-   %normalize; all but [erp fc]
-   if ~isfield(batch_file, 'normalize'), wrongbatch = 1; msgErr='normalize missing in input';
-   elseif isempty(batch_file.normalize), wrongbatch = 1; msgErr='normalize empty';
-   else session.normalize = batch_file.normalize;
-   end
+%    %normalize; all but [erp fc]
+%    if ~isfield(batch_file, 'normalize'), wrongbatch = 1; msgErr='normalize missing in input';
+%    elseif isempty(batch_file.normalize), wrongbatch = 1; msgErr='normalize empty';
+%    else session.normalize = batch_file.normalize;
+%    end
    
-   %dims; fc
-   if ~isfield(batch_file, 'dims'), wrongbatch = 1; msgErr='dims missing in input';
-   elseif isempty(batch_file.dims), wrongbatch = 1; msgErr='dims empty';
-   else session.dims = batch_file.dims;
-   end
+%    %dims; fc
+%    if ~isfield(batch_file, 'dims'), wrongbatch = 1; msgErr='dims missing in input';
+%    elseif isempty(batch_file.dims), wrongbatch = 1; msgErr='dims empty';
+%    else session.dims = batch_file.dims;
+%    end
    
 
    %% check for errors and output infos
