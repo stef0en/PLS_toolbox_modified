@@ -326,7 +326,7 @@ function batch_create_datamat(batch_file)
 
       total_block_onsets = session.num_run * session.num_cond;
 
-      if total_block_onsets ~= length(block_onsets)
+      if total_block_onsets ~= sum(sum(cellfun(@(c) size(c,1), batch_file.block_onsets), 1))      % evaluates  the number of rows of matrices stacked into a cell
          error('There is error(s) in batch file, please read ''UserGuide.htm'' for help');
       end
 
