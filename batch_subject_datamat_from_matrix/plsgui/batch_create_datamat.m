@@ -59,11 +59,11 @@ function batch_create_datamat(batch_file)
 %    else session.dataset_path = batch_file.dataset_path;
 %    end
   
-%    %brain_region; all but [erp fc]
-%    if ~isfield(batch_file, 'brain_region'), wrongbatch = 1; msgErr='brain_region missing in input';
-%    elseif isempty(batch_file.brain_region), wrongbatch = 1; msgErr='brain_region empty';
-%    else session.brain_region = batch_file.brain_region;
-%    end
+   %brain_region; all but [erp fc]
+   if ~isfield(batch_file, 'brain_region'), wrongbatch = 1; msgErr='brain_region missing in input';
+   elseif isempty(batch_file.brain_region), wrongbatch = 1; msgErr='brain_region empty';
+   else session.brain_region = batch_file.brain_region;
+   end
 
 %    %win_size; fmri
 %    if ~isfield(batch_file, 'win_size'), session.win_size = 8; msg0='win_size set to 8';
@@ -77,11 +77,11 @@ function batch_create_datamat(batch_file)
    else session.across_run = batch_file.across_run;
    end
 
-%    %single_subj; mri
-%    if ~isfield(batch_file, 'single_subj'), session.single_subj = 0; msg0='single_subj set to 0';
-%    elseif isempty(batch_file.single_subj), session.single_subj = 0; msg0='single_subj set to 0';
-%    else session.single_subj = batch_file.single_subj;
-%    end
+   %single_subj; mri
+   if ~isfield(batch_file, 'single_subj'), session.single_subj = 0; msg0='single_subj set to 0';
+   elseif isempty(batch_file.single_subj), session.single_subj = 0; msg0='single_subj set to 0';
+   else session.single_subj = batch_file.single_subj;
+   end
    
 %    %single_ref_scan; mri
 %    if ~isfield(batch_file, 'single_ref_scan'), session.single_ref_scan = 0; msg0='single_ref_scan set to 0';
@@ -302,8 +302,8 @@ function batch_create_datamat(batch_file)
 				= rri_fileparts(session.data_files{i});
 
          for j = 1:session.num_cond
-            session.blk_onsets{i}{j} = block_onsets{(i-1)*session.num_cond+j}(:);
-            session.blk_length{i}{j} = block_length{(i-1)*session.num_cond+j}(:);
+            session.blk_onsets{i}{j} = block_onsets{i}(j,:);
+            session.blk_length{i}{j} = block_length{i}(j,:); 
             if length(session.blk_length{i}{j}) < length(session.blk_onsets{i}{j})
                error('There is error(s) in batch file, please read ''UserGuide.htm'' for help');
             end
