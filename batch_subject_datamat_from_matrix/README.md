@@ -6,7 +6,7 @@ Therefore we changed the code of 2 functions (**batch\_create\_datamat.m** and *
 To run struct datamat file creation from MAT-file:
 
 1. copy **batch\_create\_datamat.m** and **batch\_plsgui.m** into PLS/plsgui directory.
-2. create a MATLAB file (e.g. xxx\_Bfmri\_batchfile.mat) containing a stucture called **session\_file**
+2. create a MATLAB file (e.g. xxx\_Bfmri\_batchfile.mat) containing a stucture called **batch\_file**
 	 * Use the templates in this directory to see which variables need to be included 
 	 
 3. Fill the MAT-file with your data.
@@ -50,7 +50,7 @@ https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/master/
 			* block_length: cell,int 	**Like block onsets**
 	
 	
-## Tamplates
+## Templates
 Use the template as reference for the MAT-file.
 
 1. Task PLS with 2 runs and 3 conditions

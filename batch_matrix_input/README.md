@@ -91,7 +91,7 @@ https://gitlab.mpib-berlin.mpg.de/wiegert/PLS_toolbox_modifications/tree/master/
 		
 		* contrasts: array **??**
 	
-## Tamplates
+## Templates
 Not all of the aforementioned variables need to be included. Use the template as reference which variables have to be included in the MAT-file. There are 3 templates in the repository for:
 
 1. Behavioral PLS
